@@ -8,7 +8,7 @@ class ProjectConfiguration : IEntityTypeConfiguration<Project>
 {
     public void Configure(EntityTypeBuilder<Project> builder)
     {
-        builder.ToTable("Products", "public");
+        builder.ToTable("projects", schema: "public");
 
         builder.HasKey(p => p.Id);
         
@@ -28,5 +28,10 @@ class ProjectConfiguration : IEntityTypeConfiguration<Project>
             .WithMany(c => c.Projects)
             .HasForeignKey(p => p.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasMany(p => p.Images)
+            .WithOne()
+            .HasForeignKey(p => p.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -13,6 +13,6 @@ public class Project : IEntity<int>, IAudit, IDeletableEntity
     public DateTime? LastModifiedAtUtc { get; set; }
     public DateTime? DeletedAtUtc { get; set; }
     public required int CategoryId { get; set; }
-    public virtual Category Category { get; set; }
-    public virtual ICollection<Image> Images { get; set; } = new HashSet<Image>();
+    public virtual required Category Category { get; set; }
+    public virtual ICollection<Image> Images { get; } = new HashSet<Image>();
 }
