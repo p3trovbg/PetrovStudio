@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using PetrovStudio.Data.Models;
 using PetrovStudio.Data.Models.Contracts;
 
@@ -7,7 +8,7 @@ namespace PetrovStudio.Data;
 
 public class PetrovStudioDbContext(DbContextOptions<PetrovStudioDbContext> options) : DbContext(options)
 {
-    public DbSet<Project> Products => Set<Project>();
+    public DbSet<Project> Projects => Set<Project>();
     public DbSet<Category> Categories => Set<Category>();
     
 
@@ -17,14 +18,30 @@ public class PetrovStudioDbContext(DbContextOptions<PetrovStudioDbContext> optio
 
         base.OnModelCreating(modelBuilder);
 
-        // Apply global query filter for soft delete across ALL entities implementing IDeletableEntity
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        var entityTypes = modelBuilder.Model.GetEntityTypes().ToList();
+
+        var deletableTypes = entityTypes
+            .Where(et => et.ClrType != null && 
+                         typeof(IDeletableEntity).IsAssignableFrom(et.ClrType) && 
+                         et.BaseType == null);
+
+        foreach (var entityType in deletableTypes)
         {
-            if (typeof(IDeletableEntity).IsAssignableFrom(entityType.ClrType))
-            {
-                modelBuilder.Entity(entityType.ClrType)
-                    .HasQueryFilter(ConvertFilterExpression(entityType.ClrType));
-            }
+            modelBuilder.Entity(entityType.ClrType)
+                .HasQueryFilter(ConvertFilterExpression(entityType.ClrType));
+        }
+
+        DisableCascadeDelete(entityTypes);
+    }
+
+    private static void DisableCascadeDelete(List<IMutableEntityType> entityTypes)
+    {
+        var foreignKeys = entityTypes
+            .SelectMany(e => e.GetForeignKeys().Where(f => f.DeleteBehavior == DeleteBehavior.Cascade));
+
+        foreach (var foreignKey in foreignKeys)
+        {
+            foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
         }
     }
     
@@ -36,33 +53,4 @@ public class PetrovStudioDbContext(DbContextOptions<PetrovStudioDbContext> optio
         
         return Expression.Lambda(notExpression, parameter);
     }
-    
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        var entries = ChangeTracker.Entries();
-        var utcNow = DateTime.UtcNow;
-
-        foreach (var entry in entries)
-        {
-            if (entry is { State: EntityState.Added, Entity: IAudit creationAudit })
-            {
-                creationAudit.CreatedAtUtc = utcNow;
-            }
-            
-            if (entry is { State: EntityState.Modified, Entity: IAudit modificationAudit })
-            {
-                modificationAudit.LastModifiedAtUtc = utcNow;
-            }
-            
-            if (entry is { State: EntityState.Deleted, Entity: IDeletableEntity deletable })
-            {
-                entry.State = EntityState.Modified;
-                deletable.IsDeleted = true;
-                deletable.DeletedAtUtc = utcNow;
-            }
-        }
-
-        return base.SaveChangesAsync(cancellationToken);
-    }
-
 }
