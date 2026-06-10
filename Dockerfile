@@ -17,7 +17,6 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "PetrovStudio.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Install EF Core tools and build migrations bundle
 RUN dotnet tool install --global dotnet-ef --version 10.0.9
 ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet ef migrations bundle -c PetrovStudioDbContext -o /app/publish/efbundle

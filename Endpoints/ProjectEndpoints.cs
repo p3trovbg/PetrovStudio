@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using PetrovStudio.Data;
-using PetrovStudio.Data.Models;
 using PetrovStudio.Endpoints.Models;
 using PetrovStudio.Mappings;
-using PetrovStudio.Services.Contracts;
 
 namespace PetrovStudio.Endpoints;
 
@@ -13,18 +10,36 @@ public static class ProjectEndpoints
 {
     public static void MapProjectEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/projects");
+        var group = app.MapGroup("/api/projects").WithTags("Projects");
 
         group.MapGet("/", GetAllProjectsAsync);
-        group.MapPost("/", CreateProjectAsync);
-        group.MapPut("/", UpdateProjectAsync);
-        group.MapDelete("/", DeleteProjectAsync);
+        group.MapGet("/{id:int}", GetProjectByIdAsync);
     }
 
-    private static async Task<Ok<List<ShortProjectOutput>>> GetAllProjectsAsync(PetrovStudioDbContext context, CancellationToken ct)
+    private static async Task<Ok<PaginatedResult<ShortProjectOutput>>> GetAllProjectsAsync(
+        PetrovStudioDbContext context,
+        int page = 1,
+        int pageSize = 10,
+        int? categoryId = null,
+        CancellationToken ct = default)
     {
-        var projects = await context.Projects
-            .Select(p => new ShortProjectOutput()
+        pageSize = Math.Clamp(pageSize, 1, 50);
+        page = Math.Max(1, page);
+
+        var query = context.Projects.AsNoTracking();
+
+        if (categoryId.HasValue)
+        {
+            query = query.Where(p => p.CategoryId == categoryId.Value);
+        }
+
+        var totalCount = await query.CountAsync(ct);
+
+        var items = await query
+            .OrderByDescending(p => p.CreatedAtUtc)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(p => new ShortProjectOutput
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -33,58 +48,25 @@ public static class ProjectEndpoints
             })
             .ToListAsync(ct);
 
-        return TypedResults.Ok(projects);
+        var result = new PaginatedResult<ShortProjectOutput>(items, totalCount, page, pageSize);
+
+        return TypedResults.Ok(result);
     }
 
-    private static async Task<Created<Project>> CreateProjectAsync(
-        PetrovStudioDbContext context, 
-        IImageService imageService, 
-        CreateProjectInput input, 
+    private static async Task<Results<Ok<ProjectDetailsOutput>, NotFound>> GetProjectByIdAsync(
+        PetrovStudioDbContext context,
+        int id,
         CancellationToken ct)
     {
-        await using var transaction = await context.Database.BeginTransactionAsync(ct);
-        
-        var newProject = input.ToProject();
-        
-        context.Projects.Add(newProject);
-        await context.SaveChangesAsync(ct);
+        var project = await context.Projects
+            .AsNoTracking()
+            .Include(p => p.Category)
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
 
-        var imageDto = input.MainImage.ToImageDto(newProject.Id);
-        
-        var mainImagePath = await imageService.ProcessImageAsync(imageDto, ct);
-        newProject.MainImagePath = mainImagePath;
-        await context.SaveChangesAsync(ct);
-
-        if (input.Images.Count != 0)
-        {
-            var additionalImagesList = input.Images
-                .Select(img => img.ToImageDto(newProject.Id))
-                .ToList();
-
-            await imageService.ProcessImageListAsync(additionalImagesList, ct);
-        }
-    
-        await transaction.CommitAsync(ct);
-        
-        return TypedResults.Created($"/api/projects/{newProject.Id}", newProject);
-    }
-    
-    private static async Task<Created<Project>> UpdateProjectAsync(PetrovStudioDbContext context, Project project)
-    {
-        context.Projects.Update(project);
-        await context.SaveChangesAsync();
-        return TypedResults.Created($"/api/projects/{project.Id}", project);
-    }
-    
-    private static async Task<Results<Ok<string>, NotFound>> DeleteProjectAsync(PetrovStudioDbContext context, int projectId)
-    {
-        var targetProject = await context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
-        if (targetProject == null) 
+        if (project is null)
             return TypedResults.NotFound();
-        
-        context.Projects.Remove(targetProject);
-        await context.SaveChangesAsync();
-        
-        return TypedResults.Ok("Project deleted successfully.");
+
+        return TypedResults.Ok(project.ToDetailsOutput());
     }
 }

@@ -46,5 +46,7 @@ app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 
 app.MapProjectEndpoints();
+app.MapAdministrationEndpoints();
+app.MapCategoryEndpoints();
 
 app.Run();
