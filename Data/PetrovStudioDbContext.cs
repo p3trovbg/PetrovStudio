@@ -1,8 +1,5 @@
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using PetrovStudio.Data.Models;
-using PetrovStudio.Data.Models.Contracts;
 
 namespace PetrovStudio.Data;
 
