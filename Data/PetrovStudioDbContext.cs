@@ -7,6 +7,7 @@ public class PetrovStudioDbContext(DbContextOptions<PetrovStudioDbContext> optio
 {
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<Category> Categories => Set<Category>();
+    public DbSet<Image> Images => Set<Image>();
     
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
