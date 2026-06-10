@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PetrovStudio.Data;
+using PetrovStudio.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,5 +36,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
+
+app.MapProjectEndpoints();
 
 app.Run();
