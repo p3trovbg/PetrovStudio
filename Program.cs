@@ -3,6 +3,17 @@ using PetrovStudio.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddSingleton<AuditInterceptor>();
 builder.Services.AddDbContextPool<PetrovStudioDbContext>((sp, options) =>
 {
@@ -20,6 +31,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 
