@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using PetrovStudio.Data;
 using PetrovStudio.Endpoints;
+using PetrovStudio.Services;
+using PetrovStudio.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,7 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddSingleton<AuditInterceptor>();
 builder.Services.AddDbContextPool<PetrovStudioDbContext>((sp, options) =>
 {
@@ -22,9 +25,14 @@ builder.Services.AddDbContextPool<PetrovStudioDbContext>((sp, options) =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")).AddInterceptors(interceptor);
 });
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.Logger.LogInformation("The app started");
 
