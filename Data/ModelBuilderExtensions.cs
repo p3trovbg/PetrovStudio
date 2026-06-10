@@ -32,7 +32,8 @@ public static class ModelBuilderExtensions
     /// </summary>
     public static ModelBuilder DisableCascadeDelete(this ModelBuilder modelBuilder)
     {
-        var foreignKeys = modelBuilder.Model.GetEntityTypes()
+        var foreignKeys = modelBuilder.Model
+            .GetEntityTypes()
             .SelectMany(e => e.GetForeignKeys().Where(f => f.DeleteBehavior == DeleteBehavior.Cascade));
 
         foreach (var foreignKey in foreignKeys)
