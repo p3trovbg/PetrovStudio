@@ -7,7 +7,7 @@ public class Project : IEntity<int>, IAudit, IDeletableEntity
     public int Id { get; set; }
     public required string Name { get; set; }
     public required string Description { get; set; }
-    public string MainImagePath { get; set; } = null!;
+    public string? MainImagePath { get; set; }
     public bool IsDeleted { get; set; }
     public DateTime CreatedAtUtc { get; set; }
     public DateTime? LastModifiedAtUtc { get; set; }

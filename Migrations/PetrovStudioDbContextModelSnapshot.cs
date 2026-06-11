@@ -107,7 +107,6 @@ namespace PetrovStudio.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("MainImagePath")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
