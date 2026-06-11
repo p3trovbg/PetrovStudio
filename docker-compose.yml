@@ -43,6 +43,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=petrovstudio;Username=petrov;Password=securepass;Include Error Detail=true
+      - AdminSettings__ApiKey=${ADMIN_API_KEY}
     depends_on:
       postgres:
         condition: service_healthy
