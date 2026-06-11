@@ -11,8 +11,23 @@ public static class AdministrationEndpoints
 {
     public static void MapAdministrationEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/admin").WithTags("Administration");
+        var group = app
+            .MapGroup("/api/admin")
+            .WithTags("Administration")
+            .AddEndpointFilter(async (context, next) =>
+            {
+                var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+                var expectedKey = configuration["AdminSettings:ApiKey"];
+                           
+                if (!context.HttpContext.Request.Headers.TryGetValue("Authorization", out var extractedKey) ||
+                    extractedKey != $"Bearer {expectedKey}")
+                {
+                    return Results.Unauthorized();
+                }
 
+                return await next(context);
+            });
+        
         group.MapPost("/projects", CreateProjectAsync);
         group.MapPut("/projects/{id:int}", UpdateProjectAsync);
         group.MapDelete("/projects/{id:int}", DeleteProjectAsync);
