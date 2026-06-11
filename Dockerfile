@@ -17,17 +17,15 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "PetrovStudio.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-RUN dotnet tool install --global dotnet-ef --version 10.0.9
-ENV PATH="$PATH:/root/.dotnet/tools"
-RUN dotnet ef migrations bundle -c PetrovStudioDbContext -o /app/publish/efbundle
-
 FROM base AS final
 WORKDIR /app
 USER root
 COPY --from=publish /app/publish .
-COPY entrypoint.sh .
+
+COPY entrypoint.sh efbundle ./
+
 RUN chmod +x entrypoint.sh efbundle
 RUN chown -R $APP_UID:$APP_UID /app
-USER $APP_UID
+USER root
 
 ENTRYPOINT ["./entrypoint.sh"]

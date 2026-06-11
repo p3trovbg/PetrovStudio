@@ -44,6 +44,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=petrovstudio;Username=petrov;Password=securepass;Include Error Detail=true
       - AdminSettings__ApiKey=${ADMIN_API_KEY}
+    volumes:
+      - ./uploaded_media:/app/Uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -51,3 +53,4 @@ services:
 volumes:
   postgres_data:
   pgadmin_data:
+  api_data:

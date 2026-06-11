@@ -11,6 +11,8 @@
 *.sln.docstates
 *.env
 *.idea
+/Uploads
+/uploaded_media
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

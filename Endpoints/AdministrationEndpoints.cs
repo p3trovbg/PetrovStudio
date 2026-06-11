@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetrovStudio.Data;
 using PetrovStudio.Endpoints.Models;
@@ -26,7 +27,8 @@ public static class AdministrationEndpoints
                 }
 
                 return await next(context);
-            });
+            })
+            .DisableAntiforgery();
         
         group.MapPost("/projects", CreateProjectAsync);
         group.MapPut("/projects/{id:int}", UpdateProjectAsync);
@@ -37,10 +39,11 @@ public static class AdministrationEndpoints
         group.MapDelete("/categories/{id:int}", DeleteCategoryAsync);
     }
 
+    [Consumes("multipart/form-data")]
     private static async Task<Created<int>> CreateProjectAsync(
         PetrovStudioDbContext context,
         IImageService imageService,
-        CreateProjectInput input,
+        [FromForm] CreateProjectInput input,
         CancellationToken ct)
     {
         await using var transaction = await context.Database.BeginTransactionAsync(ct);

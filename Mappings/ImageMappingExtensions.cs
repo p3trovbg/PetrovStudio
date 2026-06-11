@@ -9,8 +9,8 @@ public static class ImageMappingExtensions
     {
         return new ImageDto
         {
-            OriginalFileName = input.OriginalFileName,
-            Stream = input.ImageStream,
+            OriginalFileName = input.File.FileName,
+            Stream = input.File.OpenReadStream(),
             MetaInfo = input.MetaInfo,
             ProjectId = projectId
         };
