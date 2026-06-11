@@ -31,6 +31,10 @@ public static class AdministrationEndpoints
         group.MapPost("/projects", CreateProjectAsync);
         group.MapPut("/projects/{id:int}", UpdateProjectAsync);
         group.MapDelete("/projects/{id:int}", DeleteProjectAsync);
+        
+        group.MapPost("/categories", CreateCategoryAsync);
+        group.MapPut("/categories/{id:int}", UpdateCategoryAsync);
+        group.MapDelete("/categories/{id:int}", DeleteCategoryAsync);
     }
 
     private static async Task<Created<int>> CreateProjectAsync(
@@ -93,6 +97,52 @@ public static class AdministrationEndpoints
             return TypedResults.NotFound();
 
         context.Projects.Remove(project);
+        await context.SaveChangesAsync(ct);
+
+        return TypedResults.Ok();
+    }
+    
+    private static async Task<Created<int>> CreateCategoryAsync(
+        PetrovStudioDbContext context,
+        CreateCategoryInput input,
+        CancellationToken ct)
+    {
+        var category = input.ToCategory();
+
+        context.Categories.Add(category);
+        await context.SaveChangesAsync(ct);
+
+        return TypedResults.Created($"/api/categories/{category.Id}", category.Id);
+    }
+
+    private static async Task<Results<Ok, NotFound>> UpdateCategoryAsync(
+        PetrovStudioDbContext context,
+        int id,
+        UpdateCategoryInput input,
+        CancellationToken ct)
+    {
+        var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == id, ct);
+
+        if (category is null)
+            return TypedResults.NotFound();
+
+        category.UpdateFrom(input);
+        await context.SaveChangesAsync(ct);
+
+        return TypedResults.Ok();
+    }
+
+    private static async Task<Results<Ok, NotFound>> DeleteCategoryAsync(
+        PetrovStudioDbContext context,
+        int id,
+        CancellationToken ct)
+    {
+        var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == id, ct);
+
+        if (category is null)
+            return TypedResults.NotFound();
+
+        context.Categories.Remove(category);
         await context.SaveChangesAsync(ct);
 
         return TypedResults.Ok();
