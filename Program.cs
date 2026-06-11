@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PetrovStudio;
 using PetrovStudio.Data;
 using PetrovStudio.Endpoints;
 using PetrovStudio.Services;
@@ -22,7 +23,10 @@ builder.Services.AddSingleton<AuditInterceptor>();
 builder.Services.AddDbContextPool<PetrovStudioDbContext>((sp, options) =>
 {
     var interceptor = sp.GetRequiredService<AuditInterceptor>();
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")).AddInterceptors(interceptor);
+    
+    options
+        .UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+        .AddInterceptors(interceptor);
 });
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
