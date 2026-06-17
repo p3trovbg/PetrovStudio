@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PetrovStudio.Data;
+using PetrovStudio.Infrastructure;
+using PetrovStudio.Infrastructure.Data;
 
 #nullable disable
 

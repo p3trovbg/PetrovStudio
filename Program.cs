@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using PetrovStudio.Features.Administration;
+using PetrovStudio.Features.Categories;
+using PetrovStudio.Features.Images;
+using PetrovStudio.Features.Projects;
+using PetrovStudio.Infrastructure.Data;
 using PetrovStudio;
-using PetrovStudio.Data;
-using PetrovStudio.Endpoints;
-using PetrovStudio.Services;
-using PetrovStudio.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 

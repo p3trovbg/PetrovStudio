@@ -1,0 +1,25 @@
+using Microsoft.EntityFrameworkCore;
+using PetrovStudio.Features.Categories;
+using PetrovStudio.Features.Images;
+using PetrovStudio.Features.Projects;
+
+namespace PetrovStudio.Infrastructure.Data;
+
+public class PetrovStudioDbContext(DbContextOptions<PetrovStudioDbContext> options) : DbContext(options)
+{
+    public DbSet<Project> Projects => Set<Project>();
+    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<Image> Images => Set<Image>();
+    
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PetrovStudioDbContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder
+            .ApplySoftDeleteFilters()
+            .DisableCascadeDelete();
+    }
+}
