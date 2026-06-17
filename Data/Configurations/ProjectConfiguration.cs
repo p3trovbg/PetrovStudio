@@ -20,6 +20,9 @@ class ProjectConfiguration : IEntityTypeConfiguration<Project>
             .IsRequired()
             .HasMaxLength(5000);
         
+        builder.Property(p => p.MainImagePath)
+            .HasMaxLength(300);
+        
         builder
             .HasOne(p => p.Category)
             .WithMany(c => c.Projects)
