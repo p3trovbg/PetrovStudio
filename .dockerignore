@@ -10,3 +10,7 @@ Dockerfile
 docker-compose*
 *.txt
 *.md
+
+# Frontend build artifacts
+Client/node_modules
+Client/dist

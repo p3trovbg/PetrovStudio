@@ -50,6 +50,18 @@ services:
       postgres:
         condition: service_healthy
 
+  client:
+    image: petrovstudio-client
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+    container_name: petrovstudio_client
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
 volumes:
   postgres_data:
   pgadmin_data:

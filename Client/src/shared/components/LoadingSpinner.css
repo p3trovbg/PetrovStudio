@@ -1,0 +1,59 @@
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  padding: 3rem;
+}
+
+.spinner {
+  position: relative;
+}
+
+.spinner-sm .spinner {
+  width: 24px;
+  height: 24px;
+}
+
+.spinner-md .spinner {
+  width: 40px;
+  height: 40px;
+}
+
+.spinner-lg .spinner {
+  width: 56px;
+  height: 56px;
+}
+
+.spinner-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spinRing 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.spinner-ring:nth-child(2) {
+  border-top-color: var(--accent-secondary);
+  animation-delay: -0.15s;
+  inset: 3px;
+}
+
+.spinner-ring:nth-child(3) {
+  border-top-color: var(--text-accent);
+  animation-delay: -0.3s;
+  inset: 6px;
+}
+
+@keyframes spinRing {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-text {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
