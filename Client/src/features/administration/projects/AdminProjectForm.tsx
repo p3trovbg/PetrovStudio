@@ -56,7 +56,13 @@ export default function AdminProjectForm() {
     setLoading(true);
     try {
       if (isEditing) {
-        await updateProject(parseInt(id!, 10), { name, description, categoryId });
+        await updateProject(parseInt(id!, 10), { 
+          name, 
+          description, 
+          categoryId,
+          mainImage: mainImage || null,
+          images: additionalImages.length > 0 ? additionalImages : undefined
+        });
       } else {
         await createProject({
           name,
@@ -136,48 +142,47 @@ export default function AdminProjectForm() {
           </select>
         </div>
 
-        {!isEditing && (
-          <>
-            <div className="form-group">
-              <label className="form-label" htmlFor="project-main-image">Main Image *</label>
-              <input
-                id="project-main-image"
-                type="file"
-                className="form-input form-file"
-                accept="image/*"
-                onChange={(e) => setMainImage(e.target.files?.[0] || null)}
-                required
-              />
-              {mainImage && (
-                <div className="form-file-preview">
-                  <img src={URL.createObjectURL(mainImage)} alt="Preview" />
-                  <span>{mainImage.name}</span>
-                </div>
-              )}
+        <div className="form-group">
+          <label className="form-label" htmlFor="project-main-image">
+            Main Image {isEditing ? '(Leave blank to keep current)' : '*'}
+          </label>
+          <input
+            id="project-main-image"
+            type="file"
+            className="form-input form-file"
+            accept="image/*"
+            onChange={(e) => setMainImage(e.target.files?.[0] || null)}
+            required={!isEditing}
+          />
+          {mainImage && (
+            <div className="form-file-preview">
+              <img src={URL.createObjectURL(mainImage)} alt="Preview" />
+              <span>{mainImage.name}</span>
             </div>
+          )}
+        </div>
 
-            <div className="form-group">
-              <label className="form-label" htmlFor="project-additional-images">
-                Additional Images
-              </label>
-              <input
-                id="project-additional-images"
-                type="file"
-                className="form-input form-file"
-                accept="image/*"
-                multiple
-                onChange={(e) =>
-                  setAdditionalImages(e.target.files ? Array.from(e.target.files) : [])
-                }
-              />
-              {additionalImages.length > 0 && (
-                <p className="form-file-count">
-                  {additionalImages.length} file{additionalImages.length !== 1 ? 's' : ''} selected
-                </p>
-              )}
-            </div>
-          </>
-        )}
+        <div className="form-group">
+          <label className="form-label" htmlFor="project-additional-images">
+            Additional Images
+          </label>
+          <input
+            id="project-additional-images"
+            type="file"
+            className="form-input form-file"
+            accept="image/*"
+            multiple
+            onChange={(e) =>
+              setAdditionalImages(e.target.files ? Array.from(e.target.files) : [])
+            }
+          />
+          {additionalImages.length > 0 && (
+            <p className="form-file-count">
+              {additionalImages.length} file{additionalImages.length !== 1 ? 's' : ''} selected
+            </p>
+          )}
+        </div>
+
 
         <div className="admin-form-actions">
           <button

@@ -45,7 +45,7 @@ public static class ProjectEndpoints
             {
                 Id = p.Id,
                 Name = p.Name,
-                MainImageUrl = p.MainImagePath!,
+                MainImageUrl = $"/{p.MainImagePath}",
                 CreatedOn = p.CreatedAtUtc,
                 IsFeatured = p.IsFeatured,
             })

@@ -14,4 +14,8 @@ public class UpdateProjectInput
 
     [Required]
     public required int CategoryId { get; set; }
+
+    public IFormFile? MainImage { get; set; }
+
+    public IFormFileCollection Images { get; set; } = new FormFileCollection();
 }

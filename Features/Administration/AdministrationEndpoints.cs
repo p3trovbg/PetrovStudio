@@ -73,10 +73,12 @@ public static class AdministrationEndpoints
         return TypedResults.Created($"/api/projects/{newProject.Id}", newProject.Id);
     }
 
+    [Consumes("multipart/form-data")]
     private static async Task<Results<Ok, NotFound>> UpdateProjectAsync(
         PetrovStudioDbContext context,
+        IImageService imageService,
         int id,
-        UpdateProjectInput input,
+        [FromForm] UpdateProjectInput input,
         CancellationToken ct)
     {
         var project = await context.Projects.FirstOrDefaultAsync(p => p.Id == id, ct);
@@ -85,6 +87,33 @@ public static class AdministrationEndpoints
             return TypedResults.NotFound();
 
         project.UpdateFrom(input);
+        
+        if (input.MainImage is not null)
+        {
+            var imageDto = new ImageDto
+            {
+                OriginalFileName = input.MainImage.FileName,
+                Stream = input.MainImage.OpenReadStream(),
+                ProjectId = project.Id
+            };
+            var mainImagePath = await imageService.ProcessImageAsync(imageDto, ct);
+            project.MainImagePath = mainImagePath;
+        }
+
+        if (input.Images.Count != 0)
+        {
+            var additionalImages = input.Images
+                .Select(img => new ImageDto
+                {
+                    OriginalFileName = img.FileName,
+                    Stream = img.OpenReadStream(),
+                    ProjectId = project.Id
+                })
+                .ToList();
+
+            await imageService.ProcessImageListAsync(additionalImages, ct);
+        }
+
         await context.SaveChangesAsync(ct);
 
         return TypedResults.Ok();

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using PetrovStudio.Features.Administration;
 using PetrovStudio.Features.Categories;
 using PetrovStudio.Features.Images;
@@ -50,6 +51,12 @@ app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+    RequestPath = "/Uploads"
+});
 app.MapProjectEndpoints();
 app.MapAdministrationEndpoints();
 app.MapCategoryEndpoints();

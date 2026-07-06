@@ -51,7 +51,24 @@ export async function createProject(input: CreateProjectInput): Promise<number> 
 }
 
 export async function updateProject(id: number, input: UpdateProjectInput): Promise<void> {
-  await apiClient.put(`/api/admin/projects/${id}`, input);
+  const formData = new FormData();
+  formData.append('Name', input.name);
+  formData.append('Description', input.description);
+  formData.append('CategoryId', input.categoryId.toString());
+  
+  if (input.mainImage) {
+    formData.append('MainImage', input.mainImage);
+  }
+
+  if (input.images) {
+    input.images.forEach((file) => {
+      formData.append('Images', file);
+    });
+  }
+
+  await apiClient.put(`/api/admin/projects/${id}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 }
 
 export async function deleteProject(id: number): Promise<void> {
