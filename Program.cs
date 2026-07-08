@@ -35,6 +35,7 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddOpenApi();
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -47,6 +48,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.MapHealthChecks("/health");
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
