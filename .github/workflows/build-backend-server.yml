@@ -34,7 +34,7 @@ jobs:
     - name: Build Docker image
       run: docker compose build
     - name: Start containers
-      run: docker-compose up -d
+      run: docker compose up -d
     - name: Check running containers
       run: docker ps
     - name: Health Check
