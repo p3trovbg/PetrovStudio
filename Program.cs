@@ -48,7 +48,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.MapHealthChecks("/health");
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
@@ -59,6 +58,9 @@ app.UseStaticFiles(new StaticFileOptions
         Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
     RequestPath = "/Uploads"
 });
+
+app.MapHealthChecks("/health");
+
 app.MapProjectEndpoints();
 app.MapAdministrationEndpoints();
 app.MapCategoryEndpoints();
