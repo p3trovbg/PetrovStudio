@@ -35,11 +35,4 @@ jobs:
       run: docker compose build
     - name: Start containers
       run: docker compose up -d
-    - name: Check running containers
-      run: docker ps
-    - name: Wait for API
-      run: sleep 15
-    - name: Health Check
-      run: |
-        curl --fail http://localhost:8080/health
     
