@@ -12,11 +12,19 @@ RUN dotnet restore "./PetrovStudio.csproj"
 COPY . .
 WORKDIR "/src"
 RUN dotnet build "PetrovStudio.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
+    
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "PetrovStudio.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
+RUN dotnet ef migrations bundle \
+    --runtime linux-x64 \
+    --self-contained \
+    -o /app/publish/efbundle
+    
 FROM base AS final
 WORKDIR /app
 USER root
