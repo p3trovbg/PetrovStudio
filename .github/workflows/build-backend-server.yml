@@ -60,11 +60,15 @@ jobs:
 
     - name: Health Check
       run: |
-        timeout 30s bash -c '
+        timeout 15s bash -c '
         until curl --fail http://localhost:8080/health; do
           echo "Waiting for API to be healthy..."
           sleep 2
         done'
+
+    - name: Show compose logs
+      if: always()
+      run: docker compose logs api
 
     - name: Stop containers
       if: always()
