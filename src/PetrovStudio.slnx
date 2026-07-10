@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/backend/">
+    <Project Path="PetrovStudio.csproj" />
+  </Folder>
+  <Folder Name="/client/" />
+  <Folder Name="/deploy/" />
+</Solution>

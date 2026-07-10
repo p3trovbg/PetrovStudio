@@ -39,6 +39,12 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<PetrovStudioDbContext>();
+    dbContext.Database.Migrate();
+}
+
 app.UseExceptionHandler();
 
 app.Logger.LogInformation("The app started");

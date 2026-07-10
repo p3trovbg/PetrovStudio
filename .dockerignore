@@ -12,5 +12,5 @@ docker-compose*
 *.md
 
 # Frontend build artifacts
-Client/node_modules
-Client/dist
+client/node_modules
+client/dist

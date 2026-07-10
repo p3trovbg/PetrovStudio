@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PetrovStudio.csproj" />
+  </Folder>
+   <Folder Name="/deploy/">
+    <File Path="deploy/docker-compose.yml" />
+    <File Path="deploy/efbundle" />
+    <File Path="deploy/entrypoint.sh" />
+  </Folder>
+</Solution>

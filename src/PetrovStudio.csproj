@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Client\" />
+      <Folder Include="Uploads\Projects\" />
     </ItemGroup>
 
 </Project>

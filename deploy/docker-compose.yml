@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: petrov
-      POSTGRES_PASSWORD: securepass
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: petrovstudio
     ports:
       - "5432:5432"
@@ -22,8 +22,8 @@ services:
     container_name: petrovstudio_pgadmin
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@petrovstudio.com
-      PGADMIN_DEFAULT_PASSWORD: adminpass
+      PGADMIN_DEFAULT_EMAIL: admin
+      PGADMIN_DEFAULT_PASSWORD: 123456
     ports:
       - "5050:80"
     volumes:
@@ -34,18 +34,18 @@ services:
   api:
     image: petrovstudio-api
     build:
-      context: .
+      context: ../src
       dockerfile: Dockerfile
     container_name: petrovstudio_api
     restart: always
     ports:
       - "8080:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=petrovstudio;Username=petrov;Password=securepass;Include Error Detail=true
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
       - AdminSettings__ApiKey=${ADMIN_API_KEY}
     volumes:
-      - ./uploaded_media:/app/Uploads
+      - ../src/uploaded_media:/app/Uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -53,7 +53,7 @@ services:
   client:
     image: petrovstudio-client
     build:
-      context: ./Client
+      context: ../client
       dockerfile: Dockerfile
     container_name: petrovstudio_client
     restart: always
