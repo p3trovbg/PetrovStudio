@@ -7,4 +7,5 @@
     <File Path="deploy/efbundle" />
     <File Path="deploy/entrypoint.sh" />
   </Folder>
+    <Folder Name="/client/" />
 </Solution>
