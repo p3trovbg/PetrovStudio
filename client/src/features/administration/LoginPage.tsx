@@ -23,7 +23,7 @@ export default function LoginPage() {
 
     try {
       // Test the key by making a request to an admin endpoint
-      await apiClient.get('/api/categories', {
+      await apiClient.get('/api/admin/verify', {
         headers: { Authorization: `Bearer ${apiKey}` },
       });
       login(apiKey);

@@ -31,6 +31,8 @@ public static class AdministrationEndpoints
             })
             .DisableAntiforgery();
         
+        group.MapGet("/verify", () => Results.Ok());
+        
         group.MapPost("/projects", CreateProjectAsync);
         group.MapPut("/projects/{id:int}", UpdateProjectAsync);
         group.MapDelete("/projects/{id:int}", DeleteProjectAsync);
