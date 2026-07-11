@@ -1,9 +1,0 @@
-.admin-category-name {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.admin-category-desc {
-  color: var(--text-secondary);
-  font-size: 0.88rem;
-}
