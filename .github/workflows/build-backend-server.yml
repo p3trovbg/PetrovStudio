@@ -81,10 +81,13 @@ jobs:
             echo "Waiting for API to be healthy..."
             sleep 2
           done'
-    
-      - name: Show compose logs
-        if: always()
-        run: docker compose -f deploy/docker-compose.yml logs api
+
+      - name: Inspect container env
+        run: |
+          docker compose -f deploy/docker-compose.yml exec api env | grep ConnectionStrings
+            - name: Show compose logs
+              if: always()
+              run: docker compose -f deploy/docker-compose.yml logs api
     
       - name: Stop containers
         if: always()
