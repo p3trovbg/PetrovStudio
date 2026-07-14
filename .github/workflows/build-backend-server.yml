@@ -10,7 +10,13 @@ env:
   ADMIN_API_KEY: ${{ secrets.ADMIN_API_KEY }}
   CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
   ASPNETCORE_ENVIRONMENT: ${{ secrets.ASPNETCORE_ENVIRONMENT }}
+
+  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+
+  PGADMIN_DEFAULT_EMAIL: ${{ secrets.PGADMIN_DEFAULT_EMAIL }}
+  PGADMIN_DEFAULT_PASSWORD: ${{ secrets.PGADMIN_DEFAULT_PASSWORD }}
   
 jobs:
   validate-and-test:
@@ -62,7 +68,7 @@ jobs:
         run: docker compose -f deploy/docker-compose.yml build
     
       - name: Start containers
-        run: docker compose -f deploy/docker-compose.yml --env-file deploy/.env.example up -d
+        run: docker compose -f deploy/docker-compose.yml up -d
     
       - name: Health Check
         run: |
