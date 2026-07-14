@@ -1,6 +1,6 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getProjectById, createProject, updateProject, deleteProjectImage } from '../../projects/projectsApi';
+import { getProjectById, createProject, updateProject } from '../../projects/projectsApi';
 import { getAllCategories } from '../../categories/categoriesApi';
 import type { CategoryOutput } from '../../categories/types';
 import LoadingSpinner from '../../../shared/components/LoadingSpinner';
