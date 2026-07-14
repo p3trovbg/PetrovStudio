@@ -14,7 +14,7 @@ export interface ProjectDetailsOutput {
   createdAtUtc: string;
   categoryId: number;
   categoryName: string;
-  additionalImageUrls: string[];
+  additionalImageUrls: ImageOutput[];
 }
 
 export interface CreateProjectInput {
@@ -31,4 +31,10 @@ export interface UpdateProjectInput {
   categoryId: number;
   mainImage?: File | null;
   images?: File[];
+  removedImageIds?: string[];
+}
+
+export interface ImageOutput {
+  id: string;
+  url: string;
 }

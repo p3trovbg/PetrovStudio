@@ -1,5 +1,7 @@
 
 
+using PetrovStudio.Features.Images;
+
 namespace PetrovStudio.Features.Projects;
 
 public class ProjectDetailsOutput
@@ -11,5 +13,5 @@ public class ProjectDetailsOutput
     public DateTime CreatedAtUtc { get; set; }
     public int CategoryId { get; set; }
     public required string CategoryName { get; set; }
-    public List<string> AdditionalImageUrls { get; set; } = [];
+    public List<ImageOutput> AdditionalImageUrls { get; set; } = [];
 }

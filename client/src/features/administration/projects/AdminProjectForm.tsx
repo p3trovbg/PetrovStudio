@@ -1,10 +1,11 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getProjectById, createProject, updateProject } from '../../projects/projectsApi';
+import { getProjectById, createProject, updateProject, deleteProjectImage } from '../../projects/projectsApi';
 import { getAllCategories } from '../../categories/categoriesApi';
 import type { CategoryOutput } from '../../categories/types';
 import LoadingSpinner from '../../../shared/components/LoadingSpinner';
 import './AdminProjectForm.css';
+import type { ImageOutput } from '../../projects/types';
 
 export default function AdminProjectForm() {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,9 @@ export default function AdminProjectForm() {
   const [categoryId, setCategoryId] = useState<number>(0);
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [additionalImages, setAdditionalImages] = useState<File[]>([]);
+  const [existingMainImage, setExistingMainImage] = useState<string | null>(null);
+  const [existingImages, setExistingImages] = useState<ImageOutput[]>([]);
+  const [removedImageIds, setRemovedImageIds] = useState<string[]>([]);
   const [categories, setCategories] = useState<CategoryOutput[]>([]);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEditing);
@@ -33,6 +37,8 @@ export default function AdminProjectForm() {
           setName(project.name);
           setDescription(project.description);
           setCategoryId(project.categoryId);
+          setExistingMainImage(project.mainImageUrl);
+          setExistingImages(project.additionalImageUrls);
         })
         .catch(() => setError('Грешка при зареждане на проекта'))
         .finally(() => setFetching(false));
@@ -61,7 +67,8 @@ export default function AdminProjectForm() {
           description,
           categoryId,
           mainImage: mainImage || null,
-          images: additionalImages.length > 0 ? additionalImages : undefined
+          images: additionalImages.length > 0 ? additionalImages : undefined,
+          removedImageIds: removedImageIds.length > 0 ? removedImageIds : undefined
         });
       } else {
         await createProject({
@@ -80,6 +87,16 @@ export default function AdminProjectForm() {
       setLoading(false);
     }
   };
+
+ const markImageForRemoval = (id: string) => {
+  setRemovedImageIds(ids =>
+    ids.includes(id) ? ids : [...ids, id]
+  );
+
+  setExistingImages(images =>
+    images.filter(img => img.id !== id)
+  );
+};
 
   if (fetching) return <LoadingSpinner text="Зареждане на проекта..." />;
 
@@ -151,15 +168,19 @@ export default function AdminProjectForm() {
             type="file"
             className="form-input form-file"
             accept="image/*"
-            onChange={(e) => setMainImage(e.target.files?.[0] || null)}
+            onChange={(e) => {
+              const file = e.target.files?.[0] ?? null;
+              setMainImage(file);
+            }}
             required={!isEditing}
           />
-          {mainImage && (
-            <div className="form-file-preview">
-              <img src={URL.createObjectURL(mainImage)} alt="Преглед" />
-              <span>{mainImage.name}</span>
-            </div>
-          )}
+          <div className="form-file-preview">
+            {mainImage ? (
+              <img src={URL.createObjectURL(mainImage)} alt="Main preview" />
+            ) : existingMainImage ? (
+              <img src={existingMainImage} alt="Current main image" />
+            ) : null}
+          </div>
         </div>
 
         <div className="form-group">
@@ -177,9 +198,32 @@ export default function AdminProjectForm() {
             }
           />
           {additionalImages.length > 0 && (
-            <p className="form-file-count">
-              {additionalImages.length} {additionalImages.length === 1 ? 'избран файл' : 'избрани файла'}
-            </p>
+            <div className="new-images">
+              {additionalImages.map(file => (
+                <img
+                  key={file.name}
+                  src={URL.createObjectURL(file)}
+                  alt={file.name}
+                />
+              ))}
+            </div>
+          )}
+          {isEditing && existingImages.length > 0 && (
+            <div className="existing-images">
+              {existingImages.map(image => (
+                <div key={image.id} className="existing-image-card">
+                  <img src={image.url} alt="" />
+
+                  <button
+                    type="button"
+                    className="btn btn-danger btn-sm"
+                    onClick={() => markImageForRemoval(image.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
           )}
         </div>
 

@@ -66,6 +66,12 @@ export async function updateProject(id: number, input: UpdateProjectInput): Prom
     });
   }
 
+  if (input.removedImageIds) {
+    input.removedImageIds.forEach((id) => {
+      formData.append('RemovedImageIds', id);
+    });
+  }
+
   await apiClient.put(`/api/admin/projects/${id}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });

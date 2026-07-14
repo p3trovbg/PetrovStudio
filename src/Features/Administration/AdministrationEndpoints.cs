@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -76,7 +77,7 @@ public static class AdministrationEndpoints
     }
 
     [Consumes("multipart/form-data")]
-    private static async Task<Results<Ok, NotFound>> UpdateProjectAsync(
+    private static async Task<Results<Ok, NotFound, BadRequest<string>>> UpdateProjectAsync(
         PetrovStudioDbContext context,
         IImageService imageService,
         int id,
@@ -87,36 +88,52 @@ public static class AdministrationEndpoints
 
         if (project is null)
             return TypedResults.NotFound();
-
-        project.UpdateFrom(input);
         
-        if (input.MainImage is not null)
+        await using var transaction = await context.Database.BeginTransactionAsync(ct);
+
+        try
         {
-            var imageDto = new ImageDto
+            project.UpdateFrom(input);
+            
+            if (input.RemovedImageIds?.Count() > 0)
             {
-                OriginalFileName = input.MainImage.FileName,
-                Stream = input.MainImage.OpenReadStream(),
-                ProjectId = project.Id
-            };
-            var mainImagePath = await imageService.ProcessImageAsync(imageDto, ct);
-            project.MainImagePath = mainImagePath;
-        }
+                await imageService.RemoveImagesByIdsAsync(input.RemovedImageIds, ct);
+            }
 
-        if (input.Images.Count != 0)
-        {
-            var additionalImages = input.Images
-                .Select(img => new ImageDto
+            if (input.MainImage is not null)
+            {
+                var imageDto = new ImageDto
                 {
-                    OriginalFileName = img.FileName,
-                    Stream = img.OpenReadStream(),
+                    OriginalFileName = input.MainImage.FileName,
+                    Stream = input.MainImage.OpenReadStream(),
                     ProjectId = project.Id
-                })
-                .ToList();
+                };
+                var mainImagePath = await imageService.ProcessImageAsync(imageDto, ct);
+                project.MainImagePath = mainImagePath;
+            }
 
-            await imageService.ProcessImageListAsync(additionalImages, ct);
+            if (input.Images.Count != 0)
+            {
+                var additionalImages = input.Images
+                    .Select(img => new ImageDto
+                    {
+                        OriginalFileName = img.FileName,
+                        Stream = img.OpenReadStream(),
+                        ProjectId = project.Id
+                    })
+                    .ToList();
+
+                await imageService.ProcessImageListAsync(additionalImages, ct);
+            }
+
+            await context.SaveChangesAsync(ct);
+            await transaction.CommitAsync(ct);
         }
-
-        await context.SaveChangesAsync(ct);
+        catch (Exception exception)
+        {
+            await transaction.RollbackAsync(ct);
+            return TypedResults.BadRequest(exception.Message);
+        }
 
         return TypedResults.Ok();
     }

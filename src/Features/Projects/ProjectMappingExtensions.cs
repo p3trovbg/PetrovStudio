@@ -28,7 +28,11 @@ public static class ProjectMappingExtensions
             CreatedAtUtc = project.CreatedAtUtc,
             CategoryId = project.CategoryId,
             CategoryName = project.Category?.Name ?? string.Empty,
-            AdditionalImageUrls = project.Images.Select(i => $"/{i.Path}").ToList()
+            AdditionalImageUrls = project.Images.Select(i => new ImageOutput
+            {
+                Id = i.Id,
+                Url = $"/{i.Path}"
+            }).ToList()
         };
     }
 

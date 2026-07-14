@@ -18,4 +18,6 @@ public class UpdateProjectInput
     public IFormFile? MainImage { get; set; }
 
     public IFormFileCollection Images { get; set; } = new FormFileCollection();
+
+    public List<string>? RemovedImageIds { get; set; } = new List<string>();
 }

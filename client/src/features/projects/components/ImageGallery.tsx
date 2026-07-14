@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import './ImageGallery.css';
+import type { ImageOutput } from '../types';
 
 interface ImageGalleryProps {
-  images: string[];
+  images: ImageOutput[];
   alt?: string;
 }
 
@@ -37,7 +38,7 @@ export default function ImageGallery({ images, alt = 'Gallery image' }: ImageGal
             onClick={() => setSelectedIndex(index)}
             id={`gallery-item-${index}`}
           >
-            <img src={src} alt={`${alt} ${index + 1}`} loading="lazy" />
+            <img src={src.url} alt={`${alt} ${index + 1}`} loading="lazy" />
           </button>
         ))}
       </div>
@@ -59,12 +60,14 @@ export default function ImageGallery({ images, alt = 'Gallery image' }: ImageGal
             </>
           )}
 
-          <img
-            src={images[selectedIndex]}
-            alt={`${alt} ${selectedIndex + 1}`}
-            className="lightbox-image"
-            onClick={(e) => e.stopPropagation()}
-          />
+          <div className="lightbox-image-container">
+            <img
+              src={images[selectedIndex].url}
+              alt={`${alt} ${selectedIndex + 1}`}
+              className="lightbox-image"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
 
           <div className="lightbox-counter">
             {selectedIndex + 1} / {images.length}
