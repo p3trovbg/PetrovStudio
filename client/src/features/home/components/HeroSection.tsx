@@ -5,29 +5,38 @@ export default function HeroSection() {
   return (
     <section className="hero" id="hero-section">
       <div className="hero-bg">
-        <div className="hero-gradient-orb hero-orb-1" />
-        <div className="hero-gradient-orb hero-orb-2" />
-        <div className="hero-gradient-orb hero-orb-3" />
         <div className="hero-grid-pattern" />
       </div>
 
       <div className="container hero-content">
-        <span className="hero-label animate-fade-in-up">Creative Studio</span>
+        <span className="hero-label animate-fade-in-up">
+          Работилница Петров
+        </span>
+
         <h1 className="hero-title animate-fade-in-up stagger-1">
-          Crafting Digital
-          <br />
-          <span className="hero-title-accent">Experiences</span>
+          Мебели по поръчка, създадени за вашия дом
         </h1>
+
         <p className="hero-description animate-fade-in-up stagger-2">
-          We design and build stunning digital products that push boundaries,
-          spark engagement, and deliver real results.
+          Проектиране, изработка и монтаж на кухни, гардероби и мебели
+          по индивидуален проект. От първоначалната идея до завършения интериор.
         </p>
+
         <div className="hero-actions animate-fade-in-up stagger-3">
-          <Link to="/projects" className="btn btn-primary btn-lg" id="hero-cta-projects">
-            View Projects
+          <Link
+            to="/projects"
+            className="btn btn-primary btn-lg"
+            id="hero-cta-projects"
+          >
+            Разгледайте проектите
           </Link>
-          <Link to="/about" className="btn btn-secondary btn-lg" id="hero-cta-about">
-            Learn More
+
+          <Link
+            to="/about"
+            className="btn btn-secondary btn-lg"
+            id="hero-cta-about"
+          >
+            За нас
           </Link>
         </div>
       </div>

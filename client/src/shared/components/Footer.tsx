@@ -10,26 +10,26 @@ export default function Footer() {
         <div className="footer-content">
           <div className="footer-brand">
             <Link to="/" className="footer-logo">
-              <span className="logo-accent">Petrov</span>Studio
+              <span className="logo-accent">Работилница</span> Петров
             </Link>
             <p className="footer-tagline">
-              Crafting digital experiences with precision and artistry.
+              Индивидуални интериорни решения и мебели по поръчка в обл. Сливен. Извън областта работим по договаряне. От идеята до монтажа - качество и стил за вашия дом.
             </p>
           </div>
 
           <div className="footer-links-group">
-            <h4 className="footer-heading">Navigation</h4>
+            <h4 className="footer-heading">Навигация</h4>
             <ul className="footer-links">
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/projects">Projects</Link></li>
-              <li><Link to="/about">About</Link></li>
+              <li><Link to="/">Начало</Link></li>
+              <li><Link to="/projects">Проекти</Link></li>
+              <li><Link to="/about">За нас</Link></li>
             </ul>
           </div>
 
           <div className="footer-links-group">
-            <h4 className="footer-heading">Connect</h4>
+            <h4 className="footer-heading">Контакти</h4>
             <ul className="footer-links">
-              <li><a href="mailto:hello@petrovstudio.com">Email</a></li>
+              <li><a href="mailto:hello@petrovstudio.com">Имейл</a></li>
               <li><a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a></li>
               <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
             </ul>
@@ -37,7 +37,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {currentYear} PetrovStudio. All rights reserved.</p>
+          <p>&copy; {currentYear} PetrovStudio. Всички права запазени.</p>
         </div>
       </div>
     </footer>

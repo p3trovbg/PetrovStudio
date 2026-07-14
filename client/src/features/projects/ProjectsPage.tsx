@@ -52,13 +52,13 @@ export default function ProjectsPage() {
     <div className="page-enter" id="projects-page">
       <section className="projects-hero">
         <div className="container">
-          <h1 className="section-title">Projects</h1>
-          <p className="section-subtitle">Explore our portfolio of creative work</p>
+          <h1 className="section-title">Проекти</h1>
+          <p className="section-subtitle">Разгледайте нашето портфолио от проекти</p>
 
           {categories.length > 0 && (
             <div className="projects-filters" id="category-filters">
               <CategoryBadge
-                name="All"
+                name="Всички"
                 active={!selectedCategory}
                 onClick={() => handleCategoryFilter(null)}
               />
@@ -77,7 +77,7 @@ export default function ProjectsPage() {
 
       <section className="container">
         {loading ? (
-          <LoadingSpinner text="Loading projects..." />
+          <LoadingSpinner text="Зареждане на проектите..." />
         ) : result && result.items.length > 0 ? (
           <>
             <div className="projects-grid" id="projects-grid">
@@ -100,7 +100,7 @@ export default function ProjectsPage() {
           </>
         ) : (
           <div className="projects-empty">
-            <p>No projects found.</p>
+            <p>Няма намерени проекти.</p>
           </div>
         )}
       </section>

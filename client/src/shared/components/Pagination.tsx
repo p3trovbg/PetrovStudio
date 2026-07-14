@@ -38,7 +38,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
         disabled={currentPage <= 1}
         onClick={() => onPageChange(currentPage - 1)}
       >
-        ← Prev
+        ← Предишна
       </button>
 
       <div className="pagination-pages">
@@ -65,7 +65,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
         disabled={currentPage >= totalPages}
         onClick={() => onPageChange(currentPage + 1)}
       >
-        Next →
+        Следваща →
       </button>
     </div>
   );

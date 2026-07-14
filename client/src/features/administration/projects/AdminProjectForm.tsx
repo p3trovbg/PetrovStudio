@@ -34,7 +34,7 @@ export default function AdminProjectForm() {
           setDescription(project.description);
           setCategoryId(project.categoryId);
         })
-        .catch(() => setError('Failed to load project'))
+        .catch(() => setError('Грешка при зареждане на проекта'))
         .finally(() => setFetching(false));
     }
   }, [id, isEditing]);
@@ -44,21 +44,21 @@ export default function AdminProjectForm() {
     setError('');
 
     if (!name.trim() || !description.trim() || !categoryId) {
-      setError('Please fill in all required fields');
+      setError('Моля, попълнете всички задължителни полета');
       return;
     }
 
     if (!isEditing && !mainImage) {
-      setError('Please select a main image');
+      setError('Моля, изберете основно изображение');
       return;
     }
 
     setLoading(true);
     try {
       if (isEditing) {
-        await updateProject(parseInt(id!, 10), { 
-          name, 
-          description, 
+        await updateProject(parseInt(id!, 10), {
+          name,
+          description,
           categoryId,
           mainImage: mainImage || null,
           images: additionalImages.length > 0 ? additionalImages : undefined
@@ -74,23 +74,23 @@ export default function AdminProjectForm() {
       }
       navigate('/admin/projects');
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to save project';
+      const message = err instanceof Error ? err.message : 'Грешка при записване на проекта';
       setError(message);
     } finally {
       setLoading(false);
     }
   };
 
-  if (fetching) return <LoadingSpinner text="Loading project..." />;
+  if (fetching) return <LoadingSpinner text="Зареждане на проекта..." />;
 
   return (
     <div className="page-enter" id="admin-project-form-page">
       <div className="admin-page-header">
         <h1 className="admin-page-title">
-          {isEditing ? 'Edit Project' : 'Create Project'}
+          {isEditing ? 'Редактиране на проект' : 'Създаване на проект'}
         </h1>
         <p className="admin-page-subtitle">
-          {isEditing ? 'Update project details' : 'Add a new project to your portfolio'}
+          {isEditing ? 'Обновяване на детайлите на проекта' : 'Добавяне на нов проект към вашето портфолио'}
         </p>
       </div>
 
@@ -98,14 +98,14 @@ export default function AdminProjectForm() {
         {error && <div className="admin-form-error">{error}</div>}
 
         <div className="form-group">
-          <label className="form-label" htmlFor="project-name">Name *</label>
+          <label className="form-label" htmlFor="project-name">Име *</label>
           <input
             id="project-name"
             type="text"
             className="form-input"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Project name"
+            placeholder="Име на проекта"
             minLength={3}
             maxLength={100}
             required
@@ -113,13 +113,13 @@ export default function AdminProjectForm() {
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="project-description">Description *</label>
+          <label className="form-label" htmlFor="project-description">Описание *</label>
           <textarea
             id="project-description"
             className="form-textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe the project..."
+            placeholder="Опишете проекта..."
             minLength={5}
             maxLength={5000}
             required
@@ -127,7 +127,7 @@ export default function AdminProjectForm() {
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="project-category">Category *</label>
+          <label className="form-label" htmlFor="project-category">Категория *</label>
           <select
             id="project-category"
             className="form-select"
@@ -135,7 +135,7 @@ export default function AdminProjectForm() {
             onChange={(e) => setCategoryId(parseInt(e.target.value, 10))}
             required
           >
-            <option value={0} disabled>Select a category</option>
+            <option value={0} disabled>Изберете категория</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
@@ -144,7 +144,7 @@ export default function AdminProjectForm() {
 
         <div className="form-group">
           <label className="form-label" htmlFor="project-main-image">
-            Main Image {isEditing ? '(Leave blank to keep current)' : '*'}
+            Основно изображение {isEditing ? '(Оставете празно, за да запазите текущото)' : '*'}
           </label>
           <input
             id="project-main-image"
@@ -156,7 +156,7 @@ export default function AdminProjectForm() {
           />
           {mainImage && (
             <div className="form-file-preview">
-              <img src={URL.createObjectURL(mainImage)} alt="Preview" />
+              <img src={URL.createObjectURL(mainImage)} alt="Преглед" />
               <span>{mainImage.name}</span>
             </div>
           )}
@@ -164,7 +164,7 @@ export default function AdminProjectForm() {
 
         <div className="form-group">
           <label className="form-label" htmlFor="project-additional-images">
-            Additional Images
+            Допълнителни изображения
           </label>
           <input
             id="project-additional-images"
@@ -178,7 +178,7 @@ export default function AdminProjectForm() {
           />
           {additionalImages.length > 0 && (
             <p className="form-file-count">
-              {additionalImages.length} file{additionalImages.length !== 1 ? 's' : ''} selected
+              {additionalImages.length} {additionalImages.length === 1 ? 'избран файл' : 'избрани файла'}
             </p>
           )}
         </div>
@@ -190,7 +190,7 @@ export default function AdminProjectForm() {
             className="btn btn-secondary"
             onClick={() => navigate('/admin/projects')}
           >
-            Cancel
+            Отказ
           </button>
           <button
             type="submit"
@@ -199,10 +199,10 @@ export default function AdminProjectForm() {
             id="admin-project-submit"
           >
             {loading
-              ? 'Saving...'
+              ? 'Записване...'
               : isEditing
-                ? 'Update Project'
-                : 'Create Project'}
+                ? 'Обнови проекта'
+                : 'Създай проект'}
           </button>
         </div>
       </form>

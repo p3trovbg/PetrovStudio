@@ -9,7 +9,7 @@ export default function Navbar() {
     <nav className="navbar" id="main-navbar">
       <div className="container navbar-inner">
         <Link to="/" className="navbar-logo" id="navbar-logo">
-          <span className="logo-accent">Petrov</span>Studio
+          <span className="logo-accent">Работилница</span> Петров
         </Link>
 
         <button
@@ -28,17 +28,17 @@ export default function Navbar() {
         <ul className={`navbar-links ${mobileOpen ? 'active' : ''}`} id="navbar-links">
           <li>
             <NavLink to="/" end onClick={() => setMobileOpen(false)} id="nav-home">
-              Home
+              Начало
             </NavLink>
           </li>
           <li>
             <NavLink to="/projects" onClick={() => setMobileOpen(false)} id="nav-projects">
-              Projects
+              Проекти
             </NavLink>
           </li>
           <li>
             <NavLink to="/about" onClick={() => setMobileOpen(false)} id="nav-about">
-              About
+              За нас
             </NavLink>
           </li>
         </ul>

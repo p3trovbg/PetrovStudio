@@ -42,33 +42,33 @@ export default function AdminProjectsPage() {
     <div className="page-enter" id="admin-projects-page">
       <div className="admin-page-header">
         <div>
-          <h1 className="admin-page-title">Projects</h1>
-          <p className="admin-page-subtitle">Manage your portfolio projects</p>
+          <h1 className="admin-page-title">Проекти</h1>
+          <p className="admin-page-subtitle">Управлявайте вашите проекти в портфолиото</p>
         </div>
       </div>
 
       <div className="admin-toolbar">
         <span className="admin-count">
-          {result ? `${result.totalCount} project${result.totalCount !== 1 ? 's' : ''}` : ''}
+          {result ? `${result.totalCount} ${result.totalCount === 1 ? 'проект' : 'проекта'}` : ''}
         </span>
         <Link to="/admin/projects/create" className="btn btn-primary" id="admin-create-project">
-          + New Project
+          + Нов проект
         </Link>
       </div>
 
       {loading ? (
-        <LoadingSpinner text="Loading projects..." />
+        <LoadingSpinner text="Зареждане на проектите..." />
       ) : result && result.items.length > 0 ? (
         <>
           <div className="table-container">
             <table className="table" id="admin-projects-table">
               <thead>
                 <tr>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Featured</th>
-                  <th>Created</th>
-                  <th>Actions</th>
+                  <th>Изображение</th>
+                  <th>Име</th>
+                  <th>Специален</th>
+                  <th>Създаден на</th>
+                  <th>Действия</th>
                 </tr>
               </thead>
               <tbody>
@@ -89,13 +89,13 @@ export default function AdminProjectsPage() {
                     </td>
                     <td>
                       {project.isFeatured ? (
-                        <span className="badge badge-success">Featured</span>
+                        <span className="badge badge-success">Специален</span>
                       ) : (
                         <span className="badge" style={{ opacity: 0.5 }}>—</span>
                       )}
                     </td>
                     <td>
-                      {new Date(project.createdOn).toLocaleDateString('en-US', {
+                      {new Date(project.createdOn).toLocaleDateString('bg-BG', {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric',
@@ -108,14 +108,14 @@ export default function AdminProjectsPage() {
                           className="btn btn-secondary btn-sm"
                           id={`admin-edit-project-${project.id}`}
                         >
-                          Edit
+                          Редактиране
                         </Link>
                         <button
                           className="btn btn-danger btn-sm"
                           onClick={() => setDeleteTarget(project)}
                           id={`admin-delete-project-${project.id}`}
                         >
-                          Delete
+                          Изтриване
                         </button>
                       </div>
                     </td>
@@ -133,18 +133,18 @@ export default function AdminProjectsPage() {
         </>
       ) : (
         <div className="admin-empty glass-card">
-          <p>No projects yet.</p>
+          <p>Все още няма проекти.</p>
           <Link to="/admin/projects/create" className="btn btn-primary">
-            Create Your First Project
+            Създайте първия си проект
           </Link>
         </div>
       )}
 
       <ConfirmDialog
         isOpen={!!deleteTarget}
-        title="Delete Project"
-        message={`Are you sure you want to delete "${deleteTarget?.name}"? This action cannot be undone.`}
-        confirmLabel="Delete"
+        title="Изтриване на проект"
+        message={`Сигурни ли сте, че искате да изтриете "${deleteTarget?.name}"? Това действие не може да бъде отменено.`}
+        confirmLabel="Изтриване"
         onConfirm={handleDelete}
         onCancel={() => setDeleteTarget(null)}
         variant="danger"

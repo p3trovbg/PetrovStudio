@@ -1,21 +1,24 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const AUTH_KEY = 'adminApiKey';
 
 export function useAuth() {
-  const isAuthenticated = !!sessionStorage.getItem(AUTH_KEY);
+    const [apiKey, setApiKey] = useState<string | null>(
+    () => sessionStorage.getItem(AUTH_KEY)
+  );
 
-  const login = useCallback((apiKey: string) => {
-    sessionStorage.setItem(AUTH_KEY, apiKey);
-  }, []);
+  useEffect(() => {
+    if (apiKey) {
+      sessionStorage.setItem(AUTH_KEY, apiKey);
+    } else {
+      sessionStorage.removeItem(AUTH_KEY);
+    }
+  }, [apiKey]);
 
-  const logout = useCallback(() => {
-    sessionStorage.removeItem(AUTH_KEY);
-  }, []);
+  const isAuthenticated = !!apiKey;
 
-  const getApiKey = useCallback((): string | null => {
-    return sessionStorage.getItem(AUTH_KEY);
-  }, []);
+  const login = useCallback((key: string) => setApiKey(key), []);
+  const logout = useCallback(() => setApiKey(null), []);
 
-  return { isAuthenticated, login, logout, getApiKey };
+  return { isAuthenticated, login, logout, apiKey };
 }

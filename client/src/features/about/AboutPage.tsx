@@ -5,13 +5,12 @@ export default function AboutPage() {
     <div className="page-enter" id="about-page">
       <section className="about-hero">
         <div className="container">
-          <span className="about-label">About Us</span>
+          <span className="about-label">За нас</span>
           <h1 className="about-title">
-            We Are <span className="text-accent">PetrovStudio</span>
+            <span className="text-accent">Работилница Петров</span>
           </h1>
           <p className="about-intro">
-            A creative studio passionate about crafting exceptional digital experiences
-            that blend aesthetics with functionality.
+            Работилница Петров изработва мебели по поръчка за Сливен и региона. Създаваме индивидуални решения за кухни, гардероби, спални и цялостно обзавеждане, съобразени с вашето пространство, нужди и идеи. От първоначалната идея и 3D проекта до изработката и монтажа – целта ни е да създадем функционално и добре изпълнено обзавеждане, направено специално за вашия дом.
           </p>
         </div>
       </section>
@@ -21,31 +20,25 @@ export default function AboutPage() {
           <div className="about-grid">
             <div className="about-card glass-card animate-fade-in-up">
               <div className="about-card-icon">🎨</div>
-              <h3>Design Philosophy</h3>
+              <h3>Материали</h3>
               <p>
-                We believe in the power of minimalist design combined with bold
-                accents. Every pixel is intentional, every interaction is
-                meaningful. Our work speaks through clarity and elegance.
+                Използваме само висококачествени материали от реномирани доставчици. Мебелите се изработват прецизно по точни размери, за да паснат идеално във вашето пространство.
               </p>
             </div>
 
             <div className="about-card glass-card animate-fade-in-up stagger-1">
               <div className="about-card-icon">⚡</div>
-              <h3>Technical Excellence</h3>
+              <h3>Техническо съвършенство</h3>
               <p>
-                Built on modern technologies and best practices, our solutions
-                are performant, scalable, and maintainable. We write code that
-                stands the test of time.
+                Използваме модерни машини и инструменти, за да гарантираме прецизност и качество на всяко изделие. Нашето производство е оптимизирано за ефективност и спазване на договорените срокове.
               </p>
             </div>
 
             <div className="about-card glass-card animate-fade-in-up stagger-2">
               <div className="about-card-icon">🚀</div>
-              <h3>Innovation Driven</h3>
+              <h3>Дизайн</h3>
               <p>
-                We stay at the forefront of technology, continuously exploring
-                new tools and techniques to deliver cutting-edge solutions that
-                exceed expectations.
+                Създаваме индивидуални дизайни, съобразени с вашите нужди и предпочитания. От модерна класика до съвременен минимализъм - вашият стил, нашата експертиза.
               </p>
             </div>
           </div>
@@ -56,33 +49,14 @@ export default function AboutPage() {
         <div className="container">
           <div className="about-story">
             <div className="about-story-content animate-fade-in-up">
-              <h2 className="section-title">Our Story</h2>
-              <p>
-                PetrovStudio was founded with a simple mission: to bridge the
-                gap between beautiful design and robust engineering. We started
-                as a small team of passionate creators and have grown into a
-                studio that delivers projects across multiple domains.
-              </p>
-              <p>
-                Our approach is collaborative and iterative. We work closely
-                with our clients to understand their vision, then bring it to
-                life with meticulous attention to detail. From concept to
-                deployment, every step is crafted with care.
-              </p>
-            </div>
-            <div className="about-story-stats animate-fade-in-up stagger-1">
-              <div className="stat-item glass-card">
-                <span className="stat-number">50+</span>
-                <span className="stat-label">Projects Delivered</span>
-              </div>
-              <div className="stat-item glass-card">
-                <span className="stat-number">5+</span>
-                <span className="stat-label">Years Experience</span>
-              </div>
-              <div className="stat-item glass-card">
-                <span className="stat-number">100%</span>
-                <span className="stat-label">Client Satisfaction</span>
-              </div>
+              <h2 className="section-title">Нашата история</h2>
+              <p>Работилница Петров е създадена с ясна идея – да предлагаме мебели по поръчка, които съчетават функционалност, изчистен дизайн и внимание към детайла.</p>
+
+              <p>Като нова фирма на пазара подхождаме към всеки проект с лично отношение и желание да изградим име, зад което стоят качество и коректност. За нас е важно да разберем нуждите и идеите на всеки клиент и да ги превърнем в практично решение, съобразено с конкретното пространство.</p>
+
+              <p>Вярваме, че добрият резултат започва с правилното планиране и завършва с прецизното изпълнение. Независимо дали става въпрос за кухня, цялостно обзавеждане или отделна мебел, към всеки проект подхождаме с еднакво внимание и отговорност.</p>
+
+              <p>Работилница Петров е в началото на своя път, но целта ни е ясна – да печелим доверието на клиентите си с добре свършена работа и резултати, които говорят сами за себе си.</p>
             </div>
           </div>
         </div>

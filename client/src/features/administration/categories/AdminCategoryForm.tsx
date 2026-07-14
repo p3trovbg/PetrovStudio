@@ -23,7 +23,7 @@ export default function AdminCategoryForm() {
           setName(cat.name);
           setDescription(cat.description || '');
         })
-        .catch(() => setError('Failed to load category'))
+        .catch(() => setError('Грешка при зареждане на категорията'))
         .finally(() => setFetching(false));
     }
   }, [id, isEditing]);
@@ -33,7 +33,7 @@ export default function AdminCategoryForm() {
     setError('');
 
     if (!name.trim()) {
-      setError('Name is required');
+      setError('Името е задължително');
       return;
     }
 
@@ -52,23 +52,23 @@ export default function AdminCategoryForm() {
       }
       navigate('/admin/categories');
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to save category';
+      const message = err instanceof Error ? err.message : 'Грешка при записване на категорията';
       setError(message);
     } finally {
       setLoading(false);
     }
   };
 
-  if (fetching) return <LoadingSpinner text="Loading category..." />;
+  if (fetching) return <LoadingSpinner text="Зареждане на категорията..." />;
 
   return (
     <div className="page-enter" id="admin-category-form-page">
       <div className="admin-page-header">
         <h1 className="admin-page-title">
-          {isEditing ? 'Edit Category' : 'Create Category'}
+          {isEditing ? 'Редактиране на категория' : 'Създаване на категория'}
         </h1>
         <p className="admin-page-subtitle">
-          {isEditing ? 'Update category details' : 'Add a new category'}
+          {isEditing ? 'Обновяване на детайлите на категорията' : 'Добавяне на нова категория'}
         </p>
       </div>
 
@@ -76,14 +76,14 @@ export default function AdminCategoryForm() {
         {error && <div className="admin-form-error">{error}</div>}
 
         <div className="form-group">
-          <label className="form-label" htmlFor="category-name">Name *</label>
+          <label className="form-label" htmlFor="category-name">Име *</label>
           <input
             id="category-name"
             type="text"
             className="form-input"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Category name"
+            placeholder="Име на категорията"
             minLength={3}
             maxLength={200}
             required
@@ -91,13 +91,13 @@ export default function AdminCategoryForm() {
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="category-description">Description</label>
+          <label className="form-label" htmlFor="category-description">Описание</label>
           <textarea
             id="category-description"
             className="form-textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Optional description..."
+            placeholder="Незадължително описание..."
             maxLength={1000}
           />
         </div>
@@ -108,7 +108,7 @@ export default function AdminCategoryForm() {
             className="btn btn-secondary"
             onClick={() => navigate('/admin/categories')}
           >
-            Cancel
+            Отказ
           </button>
           <button
             type="submit"
@@ -117,10 +117,10 @@ export default function AdminCategoryForm() {
             id="admin-category-submit"
           >
             {loading
-              ? 'Saving...'
+              ? 'Записване...'
               : isEditing
-                ? 'Update Category'
-                : 'Create Category'}
+                ? 'Обнови категорията'
+                : 'Създай категория'}
           </button>
         </div>
       </form>

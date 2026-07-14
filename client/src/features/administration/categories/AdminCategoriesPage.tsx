@@ -38,30 +38,30 @@ export default function AdminCategoriesPage() {
     <div className="page-enter" id="admin-categories-page">
       <div className="admin-page-header">
         <div>
-          <h1 className="admin-page-title">Categories</h1>
-          <p className="admin-page-subtitle">Organize your projects</p>
+          <h1 className="admin-page-title">Категории</h1>
+          <p className="admin-page-subtitle">Организирайте вашите проекти</p>
         </div>
       </div>
 
       <div className="admin-toolbar">
         <span className="admin-count">
-          {categories.length} categor{categories.length !== 1 ? 'ies' : 'y'}
+          {categories.length} ${categories.length === 1 ? 'категория' : 'категории'}
         </span>
         <Link to="/admin/categories/create" className="btn btn-primary" id="admin-create-category">
-          + New Category
+          + Нова категория
         </Link>
       </div>
 
       {loading ? (
-        <LoadingSpinner text="Loading categories..." />
+        <LoadingSpinner text="Зареждане на категориите..." />
       ) : categories.length > 0 ? (
         <div className="table-container">
           <table className="table" id="admin-categories-table">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Actions</th>
+                <th>Име</th>
+                <th>Описание</th>
+                <th>Действия</th>
               </tr>
             </thead>
             <tbody>
@@ -82,14 +82,14 @@ export default function AdminCategoriesPage() {
                         className="btn btn-secondary btn-sm"
                         id={`admin-edit-category-${cat.id}`}
                       >
-                        Edit
+                        Редактиране
                       </Link>
                       <button
                         className="btn btn-danger btn-sm"
                         onClick={() => setDeleteTarget(cat)}
                         id={`admin-delete-category-${cat.id}`}
                       >
-                        Delete
+                        Изтриване
                       </button>
                     </div>
                   </td>
@@ -100,18 +100,18 @@ export default function AdminCategoriesPage() {
         </div>
       ) : (
         <div className="admin-empty glass-card">
-          <p>No categories yet.</p>
+          <p>Все още няма категории.</p>
           <Link to="/admin/categories/create" className="btn btn-primary">
-            Create Your First Category
+            Създайте първата си категория
           </Link>
         </div>
       )}
 
       <ConfirmDialog
         isOpen={!!deleteTarget}
-        title="Delete Category"
-        message={`Are you sure you want to delete "${deleteTarget?.name}"? Projects in this category may be affected.`}
-        confirmLabel="Delete"
+        title="Изтриване на категория"
+        message={`Сигурни ли сте, че искате да изтриете "${deleteTarget?.name}"? Проектите в тази категория може да бъдат засегнати.`}
+        confirmLabel="Изтриване"
         onConfirm={handleDelete}
         onCancel={() => setDeleteTarget(null)}
         variant="danger"

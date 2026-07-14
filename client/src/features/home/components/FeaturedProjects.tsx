@@ -21,11 +21,11 @@ export default function FeaturedProjects() {
       <div className="container">
         <div className="featured-header">
           <div>
-            <h2 className="section-title">Latest Projects</h2>
-            <p className="section-subtitle">Selected works from our portfolio</p>
+            <h2 className="section-title">Последни проекти</h2>
+            <p className="section-subtitle">Избрани проекти от нашата работа</p>
           </div>
           <Link to="/projects" className="btn btn-secondary" id="featured-view-all">
-            View All →
+            Вижте всички →
           </Link>
         </div>
 
@@ -48,7 +48,7 @@ export default function FeaturedProjects() {
             ))}
           </div>
         ) : (
-          <p className="featured-empty">No projects yet. Check back soon!</p>
+          <p className="featured-empty">Все още няма проекти. Проверете отново скоро!</p>
         )}
       </div>
     </section>

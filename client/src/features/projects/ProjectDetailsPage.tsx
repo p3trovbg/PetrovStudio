@@ -22,16 +22,16 @@ export default function ProjectDetailsPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <LoadingSpinner size="lg" text="Loading project..." />;
+  if (loading) return <LoadingSpinner size="lg" text="Зареждане на проекта..." />;
 
   if (error || !project) {
     return (
       <div className="container page-enter" id="project-not-found">
         <div className="project-error">
-          <h2>Project Not Found</h2>
-          <p>The project you're looking for doesn't exist or has been removed.</p>
+          <h2>Проектът не е намерен</h2>
+          <p>Проектът, който търсите, не съществува или е бил премахнат.</p>
           <Link to="/projects" className="btn btn-primary">
-            ← Back to Projects
+            ← Обратно към проектите
           </Link>
         </div>
       </div>
@@ -52,14 +52,14 @@ export default function ProjectDetailsPage() {
       <div className="container">
         <div className="project-content">
           <Link to="/projects" className="project-back" id="project-back-link">
-            ← Back to Projects
+            ← Обратно към проектите
           </Link>
 
           <div className="project-header animate-fade-in-up">
             <CategoryBadge name={project.categoryName} />
             <h1 className="project-title">{project.name}</h1>
             <time className="project-date">
-              {new Date(project.createdAtUtc).toLocaleDateString('en-US', {
+              {new Date(project.createdAtUtc).toLocaleDateString('bg-BG', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
@@ -73,7 +73,7 @@ export default function ProjectDetailsPage() {
 
           {project.additionalImageUrls.length > 0 && (
             <div className="project-gallery animate-fade-in-up stagger-2">
-              <h2 className="project-gallery-title">Gallery</h2>
+              <h2 className="project-gallery-title">Галерия</h2>
               <ImageGallery images={project.additionalImageUrls} alt={project.name} />
             </div>
           )}

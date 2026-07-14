@@ -24,13 +24,13 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           }}
         />
         {project.isFeatured && (
-          <span className="project-card-featured">★ Featured</span>
+          <span className="project-card-featured">★ Специален</span>
         )}
       </div>
       <div className="project-card-body">
         <h3 className="project-card-title">{project.name}</h3>
         <time className="project-card-date">
-          {new Date(project.createdOn).toLocaleDateString('en-US', {
+          {new Date(project.createdOn).toLocaleDateString('bg-BG', {
             year: 'numeric',
             month: 'short',
             day: 'numeric',

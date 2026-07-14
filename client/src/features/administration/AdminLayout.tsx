@@ -11,7 +11,6 @@ export default function AdminLayout() {
 
   const handleLogout = () => {
     logout();
-    window.location.href = '/admin/login';
   };
 
   return (
@@ -26,26 +25,26 @@ export default function AdminLayout() {
         <nav className="admin-nav">
           <NavLink to="/admin" end className="admin-nav-link" id="admin-nav-dashboard">
             <span className="admin-nav-icon">📊</span>
-            Dashboard
+            Табло
           </NavLink>
           <NavLink to="/admin/projects" className="admin-nav-link" id="admin-nav-projects">
             <span className="admin-nav-icon">📁</span>
-            Projects
+            Проекти
           </NavLink>
           <NavLink to="/admin/categories" className="admin-nav-link" id="admin-nav-categories">
             <span className="admin-nav-icon">🏷️</span>
-            Categories
+            Категории
           </NavLink>
         </nav>
 
         <div className="admin-sidebar-footer">
           <a href="/" className="admin-nav-link" id="admin-nav-site">
             <span className="admin-nav-icon">🌐</span>
-            View Site
+            Към сайта
           </a>
           <button onClick={handleLogout} className="admin-nav-link admin-logout" id="admin-logout">
             <span className="admin-nav-icon">🚪</span>
-            Logout
+            Изход
           </button>
         </div>
       </aside>

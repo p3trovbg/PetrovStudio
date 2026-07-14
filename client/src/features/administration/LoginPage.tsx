@@ -14,7 +14,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!apiKey.trim()) {
-      setError('Please enter an API key');
+      setError('Моля, въведете API ключ');
       return;
     }
 
@@ -29,7 +29,7 @@ export default function LoginPage() {
       login(apiKey);
       navigate('/admin');
     } catch {
-      setError('Invalid API key. Please try again.');
+      setError('Невалиден API ключ. Моля, опитайте отново.');
     } finally {
       setLoading(false);
     }
@@ -40,20 +40,20 @@ export default function LoginPage() {
       <div className="login-card glass-card animate-fade-in-up">
         <div className="login-header">
           <div className="login-icon">🔐</div>
-          <h1 className="login-title">Admin Access</h1>
-          <p className="login-subtitle">Enter your API key to continue</p>
+          <h1 className="login-title">Администраторски достъп</h1>
+          <p className="login-subtitle">Въведете вашия API ключ, за да продължите</p>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form" id="admin-login-form">
           <div className="form-group">
-            <label className="form-label" htmlFor="api-key-input">API Key</label>
+            <label className="form-label" htmlFor="api-key-input">API ключ</label>
             <input
               id="api-key-input"
               type="password"
               className="form-input"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              placeholder="Enter your API key"
+              placeholder="Въведете вашия API ключ"
               autoFocus
             />
             {error && <p className="form-error">{error}</p>}
@@ -65,7 +65,7 @@ export default function LoginPage() {
             disabled={loading}
             id="admin-login-submit"
           >
-            {loading ? 'Verifying...' : 'Sign In'}
+            {loading ? 'Проверка...' : 'Вход'}
           </button>
         </form>
       </div>
